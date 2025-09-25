@@ -5,11 +5,11 @@ import {
   Boxes,
   Workflow,
   Cpu,
-  Scale,
   FileText,
   ShieldCheck,
   GaugeCircle,
 } from "lucide-react";
+import React from 'react';
 
 export const metadata: Metadata = {
   title: "Services — Embuscon",
