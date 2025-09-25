@@ -1,0 +1,37 @@
+{
+  "cacheItemsMap": {
+    "posts/hello-world.mdx": {
+      "document": {
+        "title": "Hello World",
+        "date": "2025-09-23T00:00:00.000Z",
+        "excerpt": "This is the very first post on the Embuscon blog.",
+        "tags": [
+          "intro",
+          "updates"
+        ],
+        "draft": "false\r",
+        "cover": "/blog/hello-cover.jpg",
+        "body": {
+          "raw": "\r\nWelcome to the **Embuscon** blog!...",
+          "code": "var Component=(()=>{var u=Object.create;var s=Object.defineProperty;var x=Object.getOwnPropertyDescriptor;var d=Object.getOwnPropertyNames;var f=Object.getPrototypeOf,g=Object.prototype.hasOwnProperty;var h=(t,e)=>()=>(e||t((e={exports:{}}).exports,e),e.exports),j=(t,e)=>{for(var o in e)s(t,o,{get:e[o],enumerable:!0})},l=(t,e,o,c)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let r of d(e))!g.call(t,r)&&r!==o&&s(t,r,{get:()=>e[r],enumerable:!(c=x(e,r))||c.enumerable});return t};var _=(t,e,o)=>(o=t!=null?u(f(t)):{},l(e||!t||!t.__esModule?s(o,\"default\",{value:t,enumerable:!0}):o,t)),b=t=>l(s({},\"__esModule\",{value:!0}),t);var i=h((C,a)=>{a.exports=_jsx_runtime});var M={};j(M,{default:()=>p,frontmatter:()=>v});var n=_(i()),v={title:\"Hello World\",date:\"2025-09-23\",excerpt:\"This is the very first post on the Embuscon blog.\",tags:[\"intro\",\"updates\"],cover:\"/blog/hello-cover.jpg\",draft:!1};function m(t){let e={p:\"p\",strong:\"strong\",...t.components};return(0,n.jsxs)(e.p,{children:[\"Welcome to the \",(0,n.jsx)(e.strong,{children:\"Embuscon\"}),\" blog!...\"]})}function p(t={}){let{wrapper:e}=t.components||{};return e?(0,n.jsx)(e,{...t,children:(0,n.jsx)(m,{...t})}):m(t)}return b(M);})();\n;return Component;"
+        },
+        "_id": "posts/hello-world.mdx",
+        "_raw": {
+          "sourceFilePath": "posts/hello-world.mdx",
+          "sourceFileName": "hello-world.mdx",
+          "sourceFileDir": "posts",
+          "contentType": "mdx",
+          "flattenedPath": "posts/hello-world"
+        },
+        "type": "Post",
+        "slug": "hello-world",
+        "url": "/blog/hello-world",
+        "readingTime": "1 min read",
+        "isDraft": false
+      },
+      "documentHash": "1758791818086",
+      "hasWarnings": false,
+      "documentTypeName": "Post"
+    }
+  }
+}

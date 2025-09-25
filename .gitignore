@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+# next build
+.next/
+out/
+# env & secrets
+.env
+.env.*
+# logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+# OS cruft
+.DS_Store
+Thumbs.db

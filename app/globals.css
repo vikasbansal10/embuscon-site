@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light theme */
+:root {
+  --bg: 0 0% 100%;
+  --fg: 222 47% 11%;
+  --primary: 215 100% 58%;
+  --muted: 220 14% 96%;
+  --card: 0 0% 100%;
+  --border: 220 13% 91%;
+}
+
+/* Dark theme (default) */
+.dark {
+  --bg: 60 4% 10%;
+  --fg: 0 0% 98%;
+  --primary: 215 100% 60%;
+  --muted: 60 4% 14%;
+  --card: 60 4% 12%;
+  --border: 0 0% 20%;
+}
+
+html, body { height: 100%; }
+body { @apply bg-brand-bg text-brand-fg antialiased; }
+
+.container-px { @apply px-4 sm:px-6 lg:px-8; }
+.card { @apply rounded-2xl bg-brand-card shadow-soft border border-brand-border; }
+.btn { @apply inline-flex items-center gap-2 rounded-2xl px-5 py-3 font-medium transition; }
+.btn-primary { @apply btn bg-brand-primary text-white hover:opacity-90; }
+.btn-outline { @apply btn border border-brand-border hover:bg-brand-muted; }
+
+@layer components {
+  .btn-sm { @apply px-3 py-2 text-sm rounded-lg; }
+  .nav-link { @apply px-3 py-1 rounded-lg text-sm transition text-brand-fg/80 hover:text-brand-fg; }
+  .nav-link-active { @apply bg-brand-primary/15 text-brand-primary ring-1 ring-brand-primary/30; }
+}
+@layer utilities {
+  .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+}
