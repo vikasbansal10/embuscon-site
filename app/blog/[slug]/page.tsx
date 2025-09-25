@@ -1,43 +1,34 @@
-import { notFound } from "next/navigation";
-import { allPosts, type Post } from "contentlayer2/generated";
-import MDX from "@/components/MDX";
+// app/blog/[slug]/page.tsx
+import React from 'react';
 
-export const dynamicParams = false;
+type Params = Promise<{ slug: string }>;
 
-export function generateStaticParams() {
-  return (allPosts as Post[])
-    .filter((p) => !p.draft)
-    .map((p) => ({ slug: p.slug }));
-}
+export default async function BlogPostPage(
+  { params }: { params: Params }
+) {
+  const { slug } = await params;
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = (allPosts as Post[]).find((p) => p.slug === params.slug);
-  if (!post) return {};
-  return {
-    title: `${post.title} — Embuscon`,
-    description: post.excerpt ?? undefined,
-  };
-}
-
-export default function PostPage({ params }: { params: { slug: string } }) {
-  const post = (allPosts as Post[]).find((p) => p.slug === params.slug && !p.draft);
-  if (!post) notFound();
+  // TODO: fetch your post by slug
+  // const post = await getPostBySlug(slug);
+  // if (!post) notFound();
 
   return (
-    <div className="max-w-3xl mx-auto container-px py-12 space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold">{post.title}</h1>
-        <p className="opacity-80 text-sm">
-          {new Date(post.date).toLocaleDateString()} • {post.readingTime}
-        </p>
-      </header>
-
-      {post.cover ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={post.cover} alt="" className="rounded-2xl border border-brand-border" />
-      ) : null}
-
-      <MDX code={post.body.code} />
-    </div>
+    <article className="prose mx-auto p-6">
+      <h1>Post: {slug}</h1>
+      {/* render content */}
+    </article>
   );
+}
+
+export async function generateMetadata(
+  { params }: { params: Params }
+) {
+  const { slug } = await params;
+  return { title: `Blog – ${slug}` };
+}
+
+// If you pre-generate pages, return slugs here:
+export async function generateStaticParams() {
+  // return (await getAllSlugs()).map(slug => ({ slug }));
+  return [];
 }
