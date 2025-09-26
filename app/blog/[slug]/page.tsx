@@ -28,7 +28,7 @@ export async function generateMetadata(
 }
 
 // If you pre-generate pages, return slugs here:
-export async function generateStaticParams() {
+export function generateStaticParams() {
   // return (await getAllSlugs()).map(slug => ({ slug }));
   return [];
 }

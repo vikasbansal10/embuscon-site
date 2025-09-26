@@ -1,82 +1,127 @@
+// components/ContactForm.tsx
 'use client';
-import { useState } from 'react';
+
+import { useState, type FormEvent } from 'react';
+
+interface ApiOk {
+  success: true;
+  message: string;
+  id?: string;
+}
+interface ApiErr {
+  success: false;
+  error: string;
+}
+type ContactApi = ApiOk | ApiErr;
+
+// ---- type guards to safely narrow unknown JSON ----
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === 'object' && v !== null;
+
+const isApiOk = (v: unknown): v is ApiOk =>
+  isRecord(v) &&
+  v.success === true &&
+  typeof v.message === 'string' &&
+  (typeof v.id === 'string' || typeof v.id === 'undefined');
+
+const isApiErr = (v: unknown): v is ApiErr =>
+  isRecord(v) && v.success === false && typeof v.error === 'string';
 
 export default function ContactForm() {
-  const [msg, setMsg] = useState<string | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
-  // eslint-disable-next-line no-undef
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setMsg(null); setErr(null);
-    setSubmitting(true);
+    if (sending) return;
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    setSending(true);
+    setMessage(null);
 
     try {
-      const res = await fetch('/api/contact', { method: 'POST', body: formData });
-      const data = await res.json();
+      const form = e.currentTarget;
+      const fd = new FormData(form);
 
-      if (!res.ok || data.success === false) throw new Error(data.error || `HTTP ${res.status}`);
+      const res = await fetch('/api/contact', { method: 'POST', body: fd });
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
-      setMsg(data.message || 'Thanks! We received your message.');
-      form.reset();
-    } catch (e: any) {
-      setErr(e.message || 'Unexpected error');
+      const json: unknown = await res.json();
+
+      let data: ContactApi;
+      if (isApiOk(json) || isApiErr(json)) {
+        data = json;
+      } else {
+        throw new Error('Malformed server response');
+      }
+
+      if (data.success) {
+        setMessage(data.message ?? 'Thanks! We received your message.');
+        form.reset();
+      } else {
+        setMessage(data.error ?? 'Something went wrong');
+      }
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
-      setSubmitting(false);
+      setSending(false);
     }
-  }
+  };
 
   return (
-    <form onSubmit={onSubmit} className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow space-y-4">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Contact Us</h2>
-
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+    <form
+      onSubmit={(e) => {
+        void handleSubmit(e); // discard the Promise for lint
+      }}
+      className="space-y-3"
+      aria-busy={sending}
+    >
+      <div className="space-y-1">
+        <label htmlFor="name" className="block text-sm font-medium">
+          Name
+        </label>
         <input
           id="name"
           name="name"
-          type="text"
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+          className="w-full rounded border px-3 py-2"
         />
       </div>
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+      <div className="space-y-1">
+        <label htmlFor="email" className="block text-sm font-medium">
+          Email
+        </label>
         <input
           id="email"
           name="email"
           type="email"
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+          className="w-full rounded border px-3 py-2"
         />
       </div>
 
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+      <div className="space-y-1">
+        <label htmlFor="message" className="block text-sm font-medium">
+          Message
+        </label>
         <textarea
           id="message"
           name="message"
-          rows={4}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+          rows={4}
+          className="w-full rounded border px-3 py-2"
         />
       </div>
 
       <button
         type="submit"
-        disabled={submitting}
-        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none"
+        disabled={sending}
+        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60 dark:bg-white dark:text-black"
       >
-        {submitting ? 'Sending…' : 'Send Message'}
+        {sending ? 'Sending…' : 'Send'}
       </button>
 
-      {msg && <p className="text-green-600 text-center">{msg}</p>}
-      {err && <p className="text-red-600 text-center">Failed: {err}</p>}
+      {message && <p className="text-sm">{message}</p>}
     </form>
   );
 }
