@@ -1,9 +1,8 @@
-// next.config.mjs
-import { withContentlayer } from "next-contentlayer2";
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-//  experimental: { typedRoutes: true },
-typedRoutes: true,
+  eslint: {
+    dirs: ['app', 'components', 'lib', 'pages', 'scripts'],
+  },
 };
 
-export default withContentlayer(nextConfig);
+export default nextConfig;

@@ -1,16 +1,20 @@
 // lib/prisma.ts
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-declare global {
-  
-}
+const IS_PROD = process.env.NODE_ENV === 'production';
 
+// Create a typed handle to globalThis so TS knows about `prisma`
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+// Reuse the client in dev; new client in prod
 export const prisma =
-  global.prisma ??
+  globalForPrisma.prisma ??
   new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    log: IS_PROD ? ['error'] : ['query', 'error', 'warn'],
   });
 
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+if (!IS_PROD) globalForPrisma.prisma = prisma;
 
 export default prisma;
