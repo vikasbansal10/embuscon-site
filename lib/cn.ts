@@ -1,1 +1,8 @@
-export const cn = (...cls: Array<string | false | undefined>) => cls.filter(Boolean).join(' ');
+// lib/cn.ts
+
+type ClassValue = string | false | null | undefined;
+
+export function cn(...inputs: ClassValue[]): string {
+  return inputs.filter(Boolean).join(' ');
+}
+

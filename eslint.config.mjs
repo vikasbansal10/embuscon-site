@@ -15,6 +15,7 @@ const ignores = [
   'build/**',
   '.vercel/**',
   'coverage/**',
+  'tailwind.config.ts',
 ];
 
 // ② Limit linting to your source dirs (add/remove as you need)

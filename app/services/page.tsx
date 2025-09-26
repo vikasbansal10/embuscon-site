@@ -17,14 +17,14 @@ export const metadata: Metadata = {
     "Data Platform Modernization, Agentic AI Prototypes, Program & Delivery Management, Advisory & GTM, Software Development & Testing, and Contract & Legal Consulting.",
 };
 
-type ServiceItem = {
+interface Service {
   title: string;
   icon: React.ElementType;
   blurb: string;
   bullets: string[];
 };
 
-const services: ServiceItem[] = [
+const services: Service[] = [
   {
     title: "Data Platform Modernization",
     icon: Database,

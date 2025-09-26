@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import type { Route } from "next";
 import clsx from "clsx";
 
-type Props = {
+interface Props {
   href: Route;               // ✅ typed route
   children: ReactNode;
   className?: string;

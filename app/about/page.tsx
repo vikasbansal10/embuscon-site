@@ -18,9 +18,8 @@ export default function AboutPage() {
         </div>
         <div className="lg:col-span-2 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 p-6 shadow-sm">
           <p className="text-neutral-700 dark:text-neutral-300">
-            Embuscon is an engineering-led consultancy helping businesses modernize
-            software, harness data, and adopt responsible AI. We blend product
-            thinking with practical delivery so you see value fast and safely.
+            Embuscon is an engineering-led consultancy that modernizes legacy systems, harness data, and deploys responsible AI -
+             pairing product thinking with hands-on delivery for fast, safe results.
           </p>
         </div>
       </section>
@@ -29,17 +28,16 @@ export default function AboutPage() {
       <section>
         <h3 className="text-xl md:text-2xl font-semibold">What we do</h3>
         <p className="mt-3 text-neutral-700 dark:text-neutral-300 max-w-3xl">
-          We partner across practices: Data Platform Modernization, Cloud
-          Migration, Program & Delivery Management, Agentic AI Prototypes,
-          Advisory & GTM, Software Development & Testing and Contract & Legal
-          Consulting. From platform builds and integrations to AI agents with
-          guardrails, we ship outcomes you can measure.
+          We partner across Legacy Modernization & Cloud Migration, Program & Delivery Management,
+           Agentic AI MVPs, Advisory & GTM, Software Development & Testing, 
+           and Contract & Legal Consulting. From platform builds and integrations 
+           to guardrailed AI agents, we deliver outcomes you can measure.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           {[
             "Data Platform Modernization",
             "Program & Delivery Management",
-            "Agentic AI Prototypes",
+            "Agentic AI MVPs",
             "Advisory & GTM",
             "Software Development & Testing",
             "Contract & Legal Consulting",

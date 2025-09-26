@@ -1,33 +1,58 @@
-import { allPosts, type Post } from "contentlayer2/generated";
-import Link from "next/link";
+// app/blog/page.tsx
+import Link from 'next/link';
+// If you use Contentlayer:
+import { allPosts } from 'contentlayer2/generated';
 
-export const metadata = { title: "Blog — Embuscon" };
+interface Post  {
+  slug: string;
+  title: string;
+  date: string;
+  description?: string;
+  draft?: boolean;
+};
 
-export default function BlogIndex() {
-  const posts = (allPosts as Post[])
-    .filter((p: Post) => !p.draft)
-    .sort((a: Post, b: Post) => (a.date < b.date ? 1 : -1));
+function isPost(x: unknown): x is Post {
+  if (typeof x !== 'object' || x === null) return false;
+  const o = x as Record<string, unknown>;
+  return (
+    typeof o.slug === 'string' &&
+    typeof o.title === 'string' &&
+    typeof o.date === 'string'
+  );
+}
+
+function normalize(input: unknown): Post[] {
+  if (!Array.isArray(input)) return [];
+  return input.filter(isPost).map(p => ({
+    slug: p.slug,
+    title: p.title,
+    date: p.date,
+    description: typeof p.description === 'string' ? p.description : undefined,
+    draft: !!p.draft,
+  }));
+}
+
+export default function BlogPage() {
+  const posts = normalize(allPosts)
+    .filter(p => !p.draft)
+    .sort((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <div className="max-w-4xl mx-auto container-px py-12 space-y-6">
-      <h1 className="text-3xl font-bold">Blog</h1>
-      {posts.length === 0 ? (
-        <p className="opacity-80">No posts yet.</p>
-      ) : (
-        <ul className="space-y-4">
-          {posts.map((p: Post) => (
-            <li key={p.slug} className="card p-5">
-              <Link href={{ pathname: "/blog/[slug]", query: { slug: p.slug } }} className="text-xl font-semibold hover:opacity-80">
-                {p.title}
-              </Link>
-              <div className="mt-1 text-sm opacity-80">
-                {new Date(p.date).toLocaleDateString()} • {p.readingTime}
-              </div>
-              {p.excerpt ? <p className="mt-2 opacity-90">{p.excerpt}</p> : null}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <main className="container mx-auto max-w-3xl p-6">
+      <h1 className="text-3xl font-bold mb-6">Blog</h1>
+      <ul className="space-y-4">
+        {posts.map(p => (
+          <li key={p.slug} className="rounded-xl border p-5">
+            <Link href={`/blog/${p.slug}`} className="text-xl font-semibold hover:opacity-80">
+              {p.title}
+            </Link>
+            <div className="mt-1 text-sm opacity-80">
+              {new Date(p.date).toLocaleDateString()}
+            </div>
+            {p.description ? <p className="mt-2">{p.description}</p> : null}
+          </li>
+        ))}
+      </ul>
+    </main>
   );
 }
