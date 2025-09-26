@@ -17,7 +17,7 @@ export default function BlogIndex() {
         <ul className="space-y-4">
           {posts.map((p: Post) => (
             <li key={p.slug} className="card p-5">
-              <Link href={p.url} className="text-xl font-semibold hover:opacity-80">
+              <Link href={{ pathname: "/blog/[slug]", query: { slug: p.slug } }} className="text-xl font-semibold hover:opacity-80">
                 {p.title}
               </Link>
               <div className="mt-1 text-sm opacity-80">
