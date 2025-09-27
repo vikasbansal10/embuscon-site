@@ -1,0 +1,17 @@
+{
+  "companyName": "Embuscon",
+  "tagline": "Empowering Business thru Consulting",
+  "images": {
+    "hero": "/bg/hero.jpg",
+    "aboutHero": "/images/about-hero.jpg",
+    "servicesHero": "/images/services-hero.jpg"
+  },
+  "cta": {
+    "primary": { "label": "Start a Conversation", "href": "/contact" },
+    "secondary": { "label": "Explore Services", "href": "/services" },
+    "contact": { "label": "Contact Us →", "href": "/contact" }
+  },
+  "footer": {
+    "copyright": "© 2025 Embuscon. All rights reserved."
+  }
+}

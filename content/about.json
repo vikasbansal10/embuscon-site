@@ -1,0 +1,61 @@
+{
+  "parallax": {
+    "title": "About Embuscon",
+    "subtitle": "Engineering-led consulting across modernization, data, and responsible AI.",
+    "imageSrc": "/images/about-hero.jpg",
+    "heightClass": "h-[36vh] md:h-[44vh] lg:h-[52vh]"
+  },
+  "whoWeAre": {
+    "kicker": "Who we are",
+    "title": "Outcome-driven, safely delivered",
+    "body": "Embuscon is an engineering-led consultancy that modernizes legacy systems, harness data, and deploys responsible AI — pairing product thinking with hands-on delivery for fast, safe results."
+  },
+  "whatWeDo": {
+    "title": "What we do",
+    "body": "We partner across Legacy Modernization & Cloud Migration, Program & Delivery Management, Agentic AI MVPs, Advisory & GTM, Software Development & Testing, and Contract & Legal Consulting. From platform builds and integrations to guardrailed AI agents, we deliver outcomes you can measure.",
+    "pills": [
+      "Data Platform Modernization",
+      "Program & Delivery Management",
+      "Agentic AI MVPs",
+      "Advisory & GTM",
+      "Software Development & Testing",
+      "Contract & Legal Consulting"
+    ]
+  },
+  "howWeWork": [
+    { "title": "Small senior pods", "desc": "Hands-on builders with clear ownership." },
+    { "title": "Clear SLAs & roadmaps", "desc": "Transparent plans, measurable outcomes." },
+    { "title": "Co-design & automation", "desc": "We co-design with your teams, automate the boring, and leave playbooks—not black boxes." }
+  ],
+  "missionVision": {
+    "mission": { "kicker": "Mission", "title": "AI with Purpose." },
+    "vision": {
+      "kicker": "Vision",
+      "items": [
+        { "title": "Ethical AI", "desc": "Guardrails, evaluation, and accountability." },
+        { "title": "Responsive Consulting", "desc": "Lean pods that adapt as goals evolve." },
+        { "title": "Client Value", "desc": "Outcomes you can see, measure, and own." }
+      ]
+    }
+  },
+  "values": [
+    { "title": "People First", "desc": "Respect, wellbeing, and growth." },
+    { "title": "Client Intimacy", "desc": "Deep context; long-term partnerships." },
+    { "title": "Knowledge Sharing", "desc": "Playbooks, docs, handovers." },
+    { "title": "Ethical Work", "desc": "Do the right thing, even when unseen." }
+  ],
+  "impact": {
+    "title": "Impact in numbers (typical targets)",
+    "items": [
+      "↑ Release frequency with CI/CD & IaC",
+      "↓ Cloud spend via FinOps baselines",
+      "↓ Data defects with quality gates & lineage",
+      "Faster AI time-to-value with evaluation & guardrails"
+    ]
+  },
+  "closing": {
+    "headline": "Let’s build something reliable.",
+    "body": "Have a challenge in mind? Start an RFP or say hello via Contact Us — we’ll return with a lightweight plan and options.",
+    "cta": { "label": "Contact Us →", "href": "/contact" }
+  }
+}
