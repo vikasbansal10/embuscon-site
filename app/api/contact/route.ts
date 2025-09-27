@@ -1,84 +1,108 @@
-// app/api/contact/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { appendSubmission, listSubmissions } from '@/lib/contactStore';
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
-interface ApiOk { success: true; message: string; id?: string }
-interface ApiErr { success: false; error: string }
+export const runtime = "nodejs";
 
-function getField(fd: FormData, key: string): string {
-  const v = fd.get(key);
-  return typeof v === 'string' ? v : '';
-}
-function errorMessage(err: unknown): string {
-  return err instanceof Error ? err.message : 'Unexpected error';
-}
+/** Zod schema for incoming contact payload */
+const ContactSchema = z.object({
+  name: z.string().trim().min(2, "Please enter your full name."),
+  email: z.string().trim().email("Please enter a valid email address."),
+  phone: z
+    .string()
+    .trim()
+    .optional()
+    .transform((v) => (v === "" ? undefined : v))
+    .refine((v) => !v || v.length >= 6, {
+      message: "If provided, phone should be at least 6 characters.",
+    }),
+  message: z.string().trim().min(10, "Message should be at least 10 characters."),
+});
 
-function getClientIp (req: NextRequest): string | null {
-  // 1) Standard proxy header — may contain a list: "client, proxy1, proxy2"
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) {
-    const first = xff.split(',')[0]?.trim();
-    if (first) return first;
-  }
+/** Zod schema for inserted row */
+const InsertedRow = z.object({
+  id: z.string().uuid(),
+});
 
-  // 2) Nginx / some proxies
-  const xRealIp = req.headers.get('x-real-ip');
-  if (xRealIp) return xRealIp;
-
-  // 3) Vercel/Next sometimes exposes req.ip at runtime but types lag
-  //    We guard with a runtime check to keep TS happy.
-  const maybeIp = (req as unknown as { ip?: unknown }).ip;
-  if (typeof maybeIp === 'string' && maybeIp.length > 0) return maybeIp;
-
-  return null;
-}
-
-export async function POST(req: NextRequest) {
-  try {
-    const ct = req.headers.get('content-type') ?? '';
-    if (!/multipart\/form-data|application\/x-www-form-urlencoded/i.test(ct)) {
-      return NextResponse.json<ApiErr>(
-        { success: false, error: 'Unsupported Content-Type' },
-        { status: 415 },
-      );
-    }
-
+/** Convert body (JSON or FormData) into a plain object of strings */
+async function parseBody(req: Request): Promise<Record<string, string>> {
+ const ct = req.headers.get('content-type') ?? '';
+  if (ct.includes("application/json")) {
+    const json = (await req.json()) as Record<string, unknown>;
+    const out: Record<string, string> = {};
+    for (const [k, v] of Object.entries(json)) out[k] = typeof v === "string" ? v : "";
+    return out;
+  } else {
     const fd = await req.formData();
-    const name = getField(fd, 'name');
-    const email = getField(fd, 'email');
-    const message = getField(fd, 'message');
-
-    if (!name || !email || !message) {
-      return NextResponse.json<ApiErr>(
-        { success: false, error: 'Missing required fields' },
-        { status: 400 },
-      );
-    }
-
-    const ip = getClientIp(req);
-    const ua = req.headers.get('user-agent') ?? null;
-
-    const id = await appendSubmission({ name, email, message, ip, ua });
-    return NextResponse.json<ApiOk>({ success: true, message: 'Saved', id }, { status: 200 });
-  } catch (err: unknown) {
-    return NextResponse.json<ApiErr>(
-      { success: false, error: errorMessage(err) },
-      { status: 500 },
-    );
+    const out: Record<string, string> = {};
+    for (const [k, v] of fd.entries()) out[k] = typeof v === "string" ? v : "";
+    return out;
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    if (req.headers.get('x-admin-token') !== process.env.ADMIN_TOKEN) {
-      return NextResponse.json<ApiErr>({ success: false, error: 'Unauthorized' }, { status: 401 });
+    // 1) Parse & validate payload
+    const raw = await parseBody(req);
+    const parsed = ContactSchema.safeParse(raw);
+    if (!parsed.success) {
+      const issues = parsed.error.issues.map((i) => i.message);
+      return NextResponse.json(
+        { success: false, error: issues[0] ?? "Invalid data." },
+        { status: 200 }
+      );
     }
-    const items = await listSubmissions();
-    return NextResponse.json({ success: true, items } as const, { status: 200 });
-  } catch (err: unknown) {
-    return NextResponse.json<ApiErr>(
-      { success: false, error: errorMessage(err) },
-      { status: 500 },
+    const { name, email, phone, message } = parsed.data;
+
+    // 2) Collect meta
+    const ip =
+      (req.headers.get("x-forwarded-for") ?? "")
+        .split(",")[0]
+        ?.trim() || undefined;
+    const ua = req.headers.get("user-agent") ?? undefined;
+
+    // 3) Insert into Supabase
+    const supabase = getSupabaseAdmin();
+    const { data, error } = await supabase
+      .from("contacts")
+      .insert({ name, email, phone: phone ?? null, message, ip, user_agent: ua })
+      .select("id")
+      .single();
+
+    if (error || !data) {
+      console.error("Supabase insert error", {
+        code: error?.code,
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+      });
+      return NextResponse.json(
+        { success: false, error: "Database insert failed." },
+        { status: 200 }
+      );
+    }
+
+    // 4) Validate returned row shape
+    const row = InsertedRow.parse(data);
+
+    return NextResponse.json({
+      success: true,
+      message: "Thanks! We received your message.",
+      id: row.id, // ✅ guaranteed string UUID
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error("API /contact crashed", {
+        name: e.name,
+        message: e.message,
+        stack: e.stack,
+      });
+    } else {
+      console.error("API /contact crashed with non-error", e);
+    }
+    return NextResponse.json(
+      { success: false, error: "Unexpected server error." },
+      { status: 200 }
     );
   }
 }
