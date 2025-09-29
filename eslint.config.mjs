@@ -1,5 +1,4 @@
 // eslint.config.mjs
-import { defineConfig } from "eslint";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -7,7 +6,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 
-// ① Ignore generated/build output
+// Ignore generated/build output
 const ignores = [
   "**/node_modules/**",
   ".next/**",
@@ -20,7 +19,7 @@ const ignores = [
   "tailwind.config.ts",
 ];
 
-// ② Limit linting to your source dirs (add/remove as you need)
+// Limit linting to your source dirs (adjust as needed)
 const files = [
   "app/**/*.{ts,tsx,js,jsx}",
   "components/**/*.{ts,tsx,js,jsx}",
@@ -29,25 +28,24 @@ const files = [
   "scripts/**/*.{ts,tsx,js,jsx}",
 ];
 
-// Bridge for legacy "extends" (Next rules) into flat config
+// Bridge Next's legacy "extends" into flat config
 const compat = new FlatCompat({ baseDirectory: process.cwd() });
 
-export default defineConfig([
-  // A) Ignore patterns
+export default [
+  // A) Global ignores
   { ignores },
 
   // B) Next.js rules (core-web-vitals)
   ...compat.config({
     extends: ["next/core-web-vitals"],
-    // If your Next app isn't at repo root, uncomment:
+    // If your Next app isn't at repo root, set:
     // settings: { next: { rootDir: "apps/web" } },
   }),
 
   // C) Base JS recommended rules
   js.configs.recommended,
 
-  // D) TypeScript recommended (type-aware) rule sets
-  //    NOTE: these provide rules; we add parserOptions in a scoped block below.
+  // D) TypeScript recommended (type-aware) + stylistic rules
   ...tseslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
@@ -58,8 +56,7 @@ export default defineConfig([
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        // Type-aware: point to your tsconfig
-        project: ["./tsconfig.json"],
+        project: ["./tsconfig.json"],   // make sure this exists
         tsconfigRootDir: process.cwd(),
       },
       globals: {
@@ -76,12 +73,12 @@ export default defineConfig([
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
 
-      // Next's fast-refresh plugin (useful if you also run Vite in parts of the repo)
+      // Next fast-refresh (okay to keep off for App Router)
       "react-refresh/only-export-components": "off",
 
-      // Temporary loosening while migrating; tighten later if desired
+      // Temporary relaxations (tighten later if you want)
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-ts-comment": "off",
     },
   },
-]);
+];
