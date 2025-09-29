@@ -87,7 +87,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     const { name, email, phone, message } = parsed.data;
 
     // 2) Collect meta
-    const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0]?.trim() || undefined;
+    const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0]?.trim() ?? undefined;
     const ua = req.headers.get("user-agent") ?? undefined;
 
     // 3) Insert into Supabase
@@ -98,7 +98,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       .select("id")
       .single();
 
-    if (error || !data) {
+    if (error ?? !data) {
       logError("supabase_insert_error", {
         code: error?.code,
         message: error?.message,
