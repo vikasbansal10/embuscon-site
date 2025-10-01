@@ -1,0 +1,92 @@
+{
+  "parallax": {
+    "title": "Our Services",
+    "subtitle": "Engineering-led consulting across modernization, delivery, and responsible AI.",
+    "imageSrc": "/images/services-hero.jpg",
+    "heightClass": "h-[34vh] md:h-[42vh] lg:h-[50vh]"
+  },
+  "intro": {
+    "kicker": "Services",
+    "title": "Consulting that ships measurable outcomes",
+    "body": "From modern data platforms and agentic AI to disciplined delivery and airtight contracts, Embuscon aligns technology execution with your business goals—safely and fast."
+  },
+  "atAGlance": [
+    { "title": "Governance-first", "desc": "Security, lineage, cost controls from day one." },
+    { "title": "Senior pods", "desc": "Small teams of builders with clear ownership." },
+    { "title": "Transparent KPIs", "desc": "Cadences and readouts that stick." }
+  ],
+  "services": [
+    {
+      "title": "Data Platform Modernization",
+      "icon": "Database",
+      "blurb": "Azure-native Medallion architectures with governance-first foundations for reliable analytics and BI.",
+      "bullets": [
+        "ADF + Databricks + Unity Catalog (Bronze–Silver–Gold)",
+        "CDC ingestion, DQ rules, lineage, cost observability",
+        "Power BI/Fabric dashboards (incl. mobile variants)",
+        "Security/RBAC, environments (Dev/UAT/PreProd/Prod)"
+      ]
+    },
+    {
+      "title": "Program & Delivery Management",
+      "icon": "Boxes",
+      "blurb": "Outcome-led delivery with clear ownership, risk control, and stakeholder alignment across complex programs.",
+      "bullets": [
+        "RAIDD logs, RACI, KPI frameworks",
+        "Risk/Dependency management & governance cadences",
+        "SOW/vendor orchestration, acceptance criteria",
+        "Health reporting, exec readouts, value tracking"
+      ]
+    },
+    {
+      "title": "Agentic AI Prototypes",
+      "icon": "Cpu",
+      "blurb": "Rapid MVPs using multi-agent patterns to validate business value with safety guardrails and evaluation.",
+      "bullets": [
+        "CrewAI / AutoGen / LangChain orchestration",
+        "Retrieval-augmented workflows, OCR pipelines",
+        "Evaluation harness, guardrails & PII redaction",
+        "Deployment patterns and cost controls"
+      ]
+    },
+    {
+      "title": "Advisory & GTM",
+      "icon": "Workflow",
+      "blurb": "Pragmatic roadmaps, competitive analysis, and packaging for market fit and accelerated adoption.",
+      "bullets": [
+        "Tech strategy, cloud cost models, build-vs-buy",
+        "Product positioning, pricing guidance",
+        "Partner ecosystems and integrations",
+        "Pilot plans & success measures"
+      ]
+    },
+    {
+      "title": "Software Development & Testing",
+      "icon": "GaugeCircle",
+      "blurb": "Modern engineering with automation and quality baked into every stage of delivery.",
+      "bullets": [
+        "Full-stack builds, APIs, integration patterns",
+        "CI/CD, infra-as-code, automated testing",
+        "Non-functional: security, performance, resiliency",
+        "DevEx enablement, golden paths, playbooks"
+      ]
+    },
+    {
+      "title": "Contract & Legal Consulting",
+      "icon": "FileText",
+      "blurb": "CLM workflows and negotiation playbooks that protect value while keeping velocity high.",
+      "bullets": [
+        "Clause libraries, fallback positions, approvals",
+        "Quality gates & acceptance frameworks",
+        "Change control, audit readiness",
+        "Risk mitigation & compliance mapping"
+      ]
+    }
+  ],
+  "engage": [
+    { "title": "Discovery → Plan", "desc": "Lightweight discovery, options & trade-offs, 30-60-90 plan." },
+    { "title": "Pilot → Scale", "desc": "Start small, measure impact, scale with guardrails." },
+    { "title": "Run → Hand-off", "desc": "Operate with you, document, and hand over playbooks." }
+  ],
+  "cta": { "title": "Ready to discuss your use-case?", "desc": "Share a business need—we’ll map best-fit options and a fast path to value.", "href": "/contact", "label": "Contact Us →" }
+}

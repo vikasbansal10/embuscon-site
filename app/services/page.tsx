@@ -1,5 +1,7 @@
-// app/services/page.tsx
 import type { Metadata } from "next";
+import React from "react";
+import ParallaxHeader from "@/components/parallaxHeader";
+import { Reveal, MotionCard } from "@/components/anim";
 import {
   Database,
   Boxes,
@@ -9,7 +11,6 @@ import {
   ShieldCheck,
   GaugeCircle,
 } from "lucide-react";
-import React from 'react';
 
 export const metadata: Metadata = {
   title: "Services — Embuscon",
@@ -22,7 +23,7 @@ interface Service {
   icon: React.ElementType;
   blurb: string;
   bullets: string[];
-};
+}
 
 const services: Service[] = [
   {
@@ -53,7 +54,7 @@ const services: Service[] = [
     title: "Agentic AI Prototypes",
     icon: Cpu,
     blurb:
-      "Rapid POCs using multi-agent patterns to validate business value with safety guardrails and evaluation.",
+      "Rapid MVPs using multi-agent patterns to validate business value with safety guardrails and evaluation.",
     bullets: [
       "CrewAI / AutoGen / LangChain orchestration",
       "Retrieval-augmented workflows, OCR pipelines",
@@ -101,49 +102,58 @@ const services: Service[] = [
 
 export default function ServicesPage() {
   return (
-    <div className="max-w-6xl mx-auto container-px py-12 space-y-12">
-      {/* Page header */}
-      <header>
-        <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-cyan-500">
-          <span className="h-2 w-2 rounded-full bg-cyan-500" />
-          Our Services
-        </span>
-        <h1 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight">
-          Consulting that ships measurable outcomes
-        </h1>
-        <p className="mt-3 max-w-3xl text-neutral-700 dark:text-neutral-300">
-          From modern data platforms and agentic AI to disciplined delivery and
-          airtight contracts, Embuscon aligns technology execution with your
-          business goals—safely and fast.
-        </p>
-      </header>
+    <div className="container-px max-w-6xl mx-auto py-12 space-y-12">
+      {/* Parallax header (mirrors About) */}
+      <ParallaxHeader
+        title="Our Services"
+        subtitle="Engineering-led consulting across modernization, delivery, and responsible AI."
+        imageSrc="/images/services-hero.jpg" // place file under /public/images/
+        heightClass="h-[34vh] md:h-[42vh] lg:h-[50vh]"
+        className="mb-6"
+      />
 
-      {/* At-a-glance bar */}
-      <section className="grid sm:grid-cols-3 gap-3">
-        <div className="rounded-xl border border-brand-border bg-brand-card p-4">
-          <p className="text-sm font-semibold">Governance-first</p>
-          <p className="text-sm opacity-80">
-            Security, lineage, cost controls from day one.
+      {/* Intro */}
+      <Reveal>
+        <header>
+          <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-cyan-500">
+            <span className="h-2 w-2 rounded-full bg-cyan-500" />
+            Services
+          </span>
+          <h1 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight">
+            Consulting that ships measurable outcomes
+          </h1>
+          <p className="mt-3 max-w-3xl text-neutral-700 dark:text-neutral-300">
+            From modern data platforms and agentic AI to disciplined delivery and airtight
+            contracts, Embuscon aligns technology execution with your business goals—safely and fast.
           </p>
-        </div>
-        <div className="rounded-xl border border-brand-border bg-brand-card p-4">
-          <p className="text-sm font-semibold">Senior pods</p>
-          <p className="text-sm opacity-80">
-            Small teams of builders with clear ownership.
-          </p>
-        </div>
-        <div className="rounded-xl border border-brand-border bg-brand-card p-4">
-          <p className="text-sm font-semibold">Transparent KPIs</p>
-          <p className="text-sm opacity-80">Cadences and readouts that stick.</p>
-        </div>
-      </section>
+        </header>
+      </Reveal>
 
-      {/* Services grid */}
-      <section className="grid md:grid-cols-2 gap-6">
-        {services.map(({ title, blurb, bullets, icon: Icon }) => (
-          <article
+      {/* At-a-glance (animated cards) */}
+      <Reveal className="grid sm:grid-cols-3 gap-3">
+        {[
+          { t: "Governance-first", d: "Security, lineage, cost controls from day one." },
+          { t: "Senior pods", d: "Small teams of builders with clear ownership." },
+          { t: "Transparent KPIs", d: "Cadences and readouts that stick." },
+        ].map((x, i) => (
+          <MotionCard
+            key={x.t}
+            delay={i * 0.06}
+            className="rounded-xl border border-brand-border bg-brand-card p-4"
+          >
+            <p className="text-sm font-semibold">{x.t}</p>
+            <p className="text-sm opacity-80">{x.d}</p>
+          </MotionCard>
+        ))}
+      </Reveal>
+
+      {/* Services grid (animated cards) */}
+      <Reveal className="grid md:grid-cols-2 gap-6">
+        {services.map(({ title, blurb, bullets, icon: Icon }, i) => (
+          <MotionCard
             key={title}
-            className="card p-6 bg-white/70 dark:bg-neutral-900/60"
+            delay={i * 0.05}
+            className="p-6 bg-white/70 dark:bg-neutral-900/60 rounded-2xl border border-brand-border"
           >
             <div className="flex items-start gap-4">
               <div className="shrink-0 h-10 w-10 rounded-xl border border-brand-border bg-brand-muted flex items-center justify-center">
@@ -165,14 +175,14 @@ export default function ServicesPage() {
                 </li>
               ))}
             </ul>
-          </article>
+          </MotionCard>
         ))}
-      </section>
+      </Reveal>
 
-      {/* How we engage */}
-      <section className="space-y-4">
+      {/* How we engage (animated) */}
+      <Reveal>
         <h2 className="text-xl md:text-2xl font-semibold">How we engage</h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="mt-6 grid md:grid-cols-3 gap-6">
           {[
             {
               t: "Discovery → Plan",
@@ -186,21 +196,22 @@ export default function ServicesPage() {
               t: "Run → Hand-off",
               d: "Operate with you, document, and hand over playbooks.",
             },
-          ].map((x) => (
-            <div
+          ].map((x, i) => (
+            <MotionCard
               key={x.t}
+              delay={i * 0.07}
               className="rounded-2xl border border-brand-border bg-brand-card p-6"
             >
               <p className="font-semibold">{x.t}</p>
               <p className="mt-2 text-sm opacity-90">{x.d}</p>
-            </div>
+            </MotionCard>
           ))}
         </div>
-      </section>
+      </Reveal>
 
-      {/* CTA */}
-      <section className="text-center">
-        <div className="card p-8">
+      {/* CTA (animated) */}
+      <Reveal className="text-center">
+        <MotionCard className="p-8 rounded-2xl border border-brand-border bg-brand-card">
           <h3 className="text-xl font-semibold">Ready to discuss your use-case?</h3>
           <p className="opacity-90 mt-2">
             Share a business need—we’ll map best-fit options and a fast path to value.
@@ -211,8 +222,8 @@ export default function ServicesPage() {
           >
             Contact Us →
           </a>
-        </div>
-      </section>
+        </MotionCard>
+      </Reveal>
     </div>
   );
 }

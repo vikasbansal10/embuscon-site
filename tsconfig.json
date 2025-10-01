@@ -2,20 +2,21 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,                  // avoids lib type friction
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "contentlayer2/generated": ["./.contentlayer/generated"]
-    },
+    "paths": {"@/*": ["./*"],
+    "contentlayer2/generated": ["./.contentlayer/generated"]},
     "types": ["node"],              // ← move here (not under paths)
     "allowJs": true,
     "incremental": true,

@@ -31,8 +31,8 @@ export default function HomePage() {
             <div className="rounded-2xl bg-white shadow-soft border border-brand-border p-6 text-neutral-900">
               <h3 className="font-semibold mb-2">Quick Highlights</h3>
               <ul className="space-y-2 opacity-90 text-sm">
-                <li>• Azure-native Medallion (ADF + Databricks + Unity Catalog + Power BI/Fabric)</li>
-                <li>• Agentic AI prototypes (CrewAI / AutoGen / LangChain) with governance-first approach</li>
+                <li>• Data Modernization with Azure Fabric</li>
+                <li>• Agentic AI MVPs (CrewAI / AutoGen / LangChain) with governance-first approach</li>
                 <li>• Delivery management for BFSI, Telecom, Travel/Hospitality</li>
                 <li>• Contract & Legal consulting for large programs</li>
               </ul>
@@ -47,7 +47,7 @@ export default function HomePage() {
           <h2 className="text-2xl font-semibold mb-6">What We Do</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: "Data Platform Modernization", blurb: "Bronze–Silver–Gold pipelines, CDC, cost governance, lineage, RBAC, DRR KPIs." },
+              { title: "Data Platform Modernization", blurb: "IaC-Terraform, Medallion Architecture, Governance, Lineage, RBAC, DRR KPIs." },
               { title: "Agentic AI", blurb: "Multi-agent workflows, retrieval, OCR pipelines, evaluation & safety guardrails." },
               { title: "Program & Delivery", blurb: "RACI, RAIDD, KPIs, stakeholder comms, outcome-driven execution." },
               { title: "Legal & Contract", blurb: "CLM workflows, playbooks, contract review accelerators." },

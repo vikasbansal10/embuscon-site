@@ -1,0 +1,29 @@
+{
+  "hero": {
+    "title": "Empowering Business thru Consulting",
+    "subtitle": "We help enterprises modernize data platforms, build agentic AI, and deliver programs with precision.",
+    "backgroundImage": "/bg/hero.jpg",
+    "buttons": [
+      { "label": "Start a Conversation", "href": "/contact", "variant": "primary" },
+      { "label": "Explore Services", "href": "/services", "variant": "outline" }
+    ]
+  },
+  "highlights": {
+    "title": "Quick Highlights",
+    "items": [
+      "Data Modernization with Azure Fabric",
+      "Agentic AI MVPs (CrewAI / AutoGen / LangChain) with governance-first approach",
+      "Delivery management for BFSI, Telecom, Travel/Hospitality",
+      "Contract & Legal consulting for large programs"
+    ]
+  },
+  "whatWeDo": {
+    "title": "What We Do",
+    "cards": [
+      { "title": "Data Platform Modernization", "blurb": "IaC-Terraform, Medallion Architecture, Governance, Lineage, RBAC, DRR KPIs." },
+      { "title": "Agentic AI", "blurb": "Multi-agent workflows, retrieval, OCR pipelines, evaluation & safety guardrails." },
+      { "title": "Program & Delivery", "blurb": "RACI, RAIDD, KPIs, stakeholder comms, outcome-driven execution." },
+      { "title": "Legal & Contract", "blurb": "CLM workflows, playbooks, contract review accelerators." }
+    ]
+  }
+}
