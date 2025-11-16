@@ -9,6 +9,13 @@ export const runtime = "nodejs";
 const SMTPS_PORT = 465 as const;
 const STARTTLS_PORT = 587 as const;
 
+// Allow-list of origins that can post to this endpoint
+const ALLOWED_ORIGINS = [
+  "https://embuscon.com",
+  "https://www.embuscon.com",
+  "http://localhost:3000",
+] as const;
+
 /** Zod schema for incoming contact payload */
 const ContactSchema = z.object({
   name: z.string().trim().min(2, "Please enter your full name."),
@@ -35,12 +42,16 @@ async function parseBody(req: Request): Promise<Record<string, string>> {
   if (ct.includes("application/json")) {
     const json = (await req.json()) as Record<string, unknown>;
     const out: Record<string, string> = {};
-    for (const [k, v] of Object.entries(json)) out[k] = typeof v === "string" ? v : "";
+    for (const [k, v] of Object.entries(json)) {
+      out[k] = typeof v === "string" ? v : "";
+    }
     return out;
   }
   const fd = await req.formData();
   const out: Record<string, string> = {};
-  for (const [k, v] of fd.entries()) out[k] = typeof v === "string" ? v : "";
+  for (const [k, v] of fd.entries()) {
+    out[k] = typeof v === "string" ? v : "";
+  }
   return out;
 }
 
@@ -72,10 +83,101 @@ function logError(event: string, data: Record<string, unknown>) {
   process.stderr.write(line);
 }
 
+/** Basic check that Origin/Referer is from our own site */
+function isAllowedOrigin(req: Request): boolean {
+  const origin = req.headers.get("origin") ?? "";
+  const referer = req.headers.get("referer") ?? "";
+
+  if (!origin && !referer) return true; // allow server-side / internal
+
+  return ALLOWED_ORIGINS.some((allowed) => {
+    return origin.startsWith(allowed) || referer.startsWith(allowed);
+  });
+}
+
 export async function POST(req: Request): Promise<NextResponse> {
   try {
-    // 1) Parse & validate payload
+    // 0) Origin check
+    if (!isAllowedOrigin(req)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid origin." },
+        { status: 200 }
+      );
+    }
+
+    // 1) Parse raw body (supports JSON + FormData)
     const raw = await parseBody(req);
+
+    // 1a) Honeypot field - bots will often fill this
+    const honeypot = (raw.website ?? "").trim();
+    if (honeypot) {
+      // Pretend success but drop on the floor
+      return NextResponse.json({
+        success: true,
+        message: "Thanks! We received your message.",
+      });
+    }
+
+    // 1b) CAPTCHA token (Cloudflare Turnstile)
+    const captchaToken =
+      (raw["cf-turnstile-response"] ?? raw["g-recaptcha-response"] ?? "").trim();
+
+    if (!captchaToken) {
+      return NextResponse.json(
+        { success: false, error: "Captcha missing." },
+        { status: 200 }
+      );
+    }
+
+    // 1c) Verify CAPTCHA with Cloudflare Turnstile
+    try {
+      const secret = requireEnv("TURNSTILE_SECRET_KEY");
+      const ipHeader = req.headers.get("x-forwarded-for") ?? "";
+      const remoteIp = ipHeader.split(",")[0]?.trim() ?? undefined;
+
+      const verifyRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            secret,
+            response: captchaToken,
+            remoteip: remoteIp,
+          }),
+          // NB: this is a live security call, never cache
+          cache: "no-store",
+        }
+      );
+
+      const verifyJson = (await verifyRes.json()) as {
+        success?: boolean;
+        ["error-codes"]?: string[];
+      };
+
+      if (!verifyJson.success) {
+        logError("turnstile_failed", {
+          errorCodes: verifyJson["error-codes"],
+        });
+        return NextResponse.json(
+          { success: false, error: "Captcha failed." },
+          { status: 200 }
+        );
+      }
+    } catch (captchaErr: unknown) {
+      const err =
+        captchaErr instanceof Error ? captchaErr : new Error(String(captchaErr));
+      logError("turnstile_error", {
+        name: err.name,
+        message: err.message,
+      });
+      return NextResponse.json(
+        { success: false, error: "Captcha verification error." },
+        { status: 200 }
+      );
+    }
+
+    // 2) Now validate the *actual* contact fields
     const parsed = ContactSchema.safeParse(raw);
     if (!parsed.success) {
       const issues = parsed.error.issues.map((i) => i.message);
@@ -86,11 +188,13 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
     const { name, email, phone, message } = parsed.data;
 
-    // 2) Collect meta
-    const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0]?.trim() ?? undefined;
+    // 3) Collect meta
+    const ip = (req.headers.get("x-forwarded-for") ?? "")
+      .split(",")[0]
+      ?.trim() ?? undefined;
     const ua = req.headers.get("user-agent") ?? undefined;
 
-    // 3) Insert into Supabase
+    // 4) Insert into Supabase
     const supabase = getSupabaseAdmin();
     const { data, error } = await supabase
       .from("contacts")
@@ -111,10 +215,10 @@ export async function POST(req: Request): Promise<NextResponse> {
       );
     }
 
-    // 4) Validate returned row shape
+    // 5) Validate returned row shape
     const row = InsertedRow.parse(data);
 
-    // 5) Send emails via SMTP (admin notification + user ack)
+    // 6) Send emails via SMTP (admin notification + user ack)
     try {
       const host = requireEnv("SMTP_HOST");
       const user = requireEnv("SMTP_USER");
@@ -124,7 +228,8 @@ export async function POST(req: Request): Promise<NextResponse> {
 
       const smtpPort = parsePort(process.env.SMTP_PORT, STARTTLS_PORT);
       const smtpSecure =
-        (process.env.SMTP_SECURE ?? "").toLowerCase() === "true" || smtpPort === SMTPS_PORT;
+        (process.env.SMTP_SECURE ?? "").toLowerCase() === "true" ||
+        smtpPort === SMTPS_PORT;
 
       // Build SMTP URL (avoids union-overload typing issues entirely)
       const protocol = smtpSecure ? "smtps" : "smtp";
@@ -200,10 +305,13 @@ Team Embuscon`,
       const err = mailErr instanceof Error ? mailErr : new Error(String(mailErr));
       logError("smtp_send_error", { name: err.name, message: err.message });
       // keep your 200 convention but flag mail failure
-      return NextResponse.json({ success: false, error: "Mail send failed." }, { status: 200 });
+      return NextResponse.json(
+        { success: false, error: "Mail send failed." },
+        { status: 200 }
+      );
     }
 
-    // 6) Success response
+    // 7) Success response
     return NextResponse.json({
       success: true,
       message: "Thanks! We received your message.",
@@ -211,7 +319,11 @@ Team Embuscon`,
     });
   } catch (e: unknown) {
     const err = e instanceof Error ? e : new Error(String(e));
-    logError("api_contact_crashed", { name: err.name, message: err.message, stack: err.stack });
+    logError("api_contact_crashed", {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+    });
     return NextResponse.json(
       { success: false, error: "Unexpected server error." },
       { status: 200 }
