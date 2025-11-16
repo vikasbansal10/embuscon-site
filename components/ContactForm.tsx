@@ -1,6 +1,7 @@
 // components/ContactForm.tsx
 'use client';
 
+import Script from 'next/script';
 import { useState, type FormEvent } from 'react';
 
 interface ApiOk {
@@ -14,7 +15,6 @@ interface ApiErr {
 }
 type ContactApi = ApiOk | ApiErr;
 
-// ---- type guards to safely narrow unknown JSON ----
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   typeof v === 'object' && v !== null;
 
@@ -40,9 +40,23 @@ export default function ContactForm() {
 
     try {
       const form = e.currentTarget;
+      const tokenInput = form.querySelector<HTMLInputElement>(
+  'input[name="cf-turnstile-response"]'
+    );
+
+    const captchaValue = tokenInput?.value?.trim() ?? '';
+
+    if (!captchaValue) {
+      setSending(false);
+      setMessage('Please complete the CAPTCHA.');
+      return;
+    }
       const fd = new FormData(form);
 
-      const res = await fetch('/api/contact', { method: 'POST', body: fd });
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        body: fd,
+      });
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
       const json: unknown = await res.json();
@@ -68,60 +82,97 @@ export default function ContactForm() {
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        void handleSubmit(e); // discard the Promise for lint
-      }}
-      className="space-y-3"
-      aria-busy={sending}
-    >
-      <div className="space-y-1">
-        <label htmlFor="name" className="block text-sm font-medium">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          required
-          className="w-full rounded border px-3 py-2"
-        />
-      </div>
+    <>
+      {/* Load Turnstile script once */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      />
 
-      <div className="space-y-1">
-        <label htmlFor="email" className="block text-sm font-medium">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          className="w-full rounded border px-3 py-2"
-        />
-      </div>
-
-      <div className="space-y-1">
-        <label htmlFor="message" className="block text-sm font-medium">
-          Message
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={4}
-          className="w-full rounded border px-3 py-2"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={sending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60 dark:bg-white dark:text-black"
+      <form
+        onSubmit={(e) => {
+          void handleSubmit(e);
+        }}
+        className="space-y-3"
+        aria-busy={sending}
       >
-        {sending ? 'Sending…' : 'Send'}
-      </button>
+        <div className="space-y-1">
+          <label htmlFor="name" className="block text-sm font-medium">
+            Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            required
+            maxLength={120}
+            className="w-full rounded border px-3 py-2"
+            autoComplete="name"
+          />
+        </div>
 
-      {message && <p className="text-sm">{message}</p>}
-    </form>
+        <div className="space-y-1">
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            maxLength={160}
+            className="w-full rounded border px-3 py-2"
+            autoComplete="email"
+            inputMode="email"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="message" className="block text-sm font-medium">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows={4}
+            maxLength={5000}
+            className="w-full rounded border px-3 py-2"
+          />
+        </div>
+
+        <div
+          className="cf-turnstile"
+          data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          data-theme="auto"
+        />
+
+        {/* Honeypot (hidden) */}
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          className="hidden"
+          aria-hidden="true"
+        />
+
+        <noscript>
+          <p className="text-sm text-red-600">
+            Please enable JavaScript to submit this form.
+          </p>
+        </noscript>
+
+        <button
+          type="submit"
+          disabled={sending}
+          className="rounded bg-black px-4 py-2 text-white disabled:opacity-60 dark:bg-white dark:text-black"
+        >
+          {sending ? 'Sending…' : 'Send'}
+        </button>
+
+        {message && <p className="text-sm">{message}</p>}
+      </form>
+    </>
   );
 }
