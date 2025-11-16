@@ -1,30 +1,39 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import type { Route } from "next";
-import clsx from "clsx";
 
-interface Props {
-  href: Route;               // ✅ typed route
+interface NavLinkProps {
+  href: string;
   children: ReactNode;
   className?: string;
-  exact?: boolean;
 };
 
-export default function NavLink({ href, children, className, exact }: Props) {
-  const pathname = usePathname() || "/";
-  const target = (href as string).replace(/\/$/, "");
-  const current = (pathname.replace(/\/$/, "") || "/");
-  const isActive = exact ? current === target : (target === "/" ? current === "/" : current.startsWith(target));
+/**
+ * NavLink
+ * - Highlights when current path matches the link
+ * - `startsWith` so `/blog` is also active on `/blog/some-post`
+ * - Allows extra classes (e.g. mobile: block, px-3, py-2)
+ */
+export default function NavLink({ href, children, className = "" }: NavLinkProps) {
+  const pathname = usePathname();
+
+  const isActive =
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname.startsWith(href + "/");
+
+  const baseClasses =
+    "text-sm transition-colors";
+  const activeClasses = "text-emerald-400 font-medium";
+  const inactiveClasses = "opacity-80 hover:opacity-100";
+
+  const combined =
+    `${baseClasses} ${isActive ? activeClasses : inactiveClasses} ${className}`.trim();
 
   return (
-    <Link
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-      className={clsx("nav-link", isActive && "nav-link-active", className)}
-    >
+    <Link href={href} className={combined}>
       {children}
     </Link>
   );
