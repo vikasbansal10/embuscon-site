@@ -17,69 +17,74 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-brand-card/80 backdrop-blur border-b border-brand-border">
-      <div className="max-w-6xl mx-auto container-px h-16 flex items-center justify-between">
-        {/* Brand */}
-        <Link href="/" className="flex items-center gap-3">
+      {/* ✅ Switched to grid for true center alignment */}
+      <div className="max-w-6xl mx-auto container-px h-16 grid grid-cols-3 items-center">
+        {/* LEFT: Brand */}
+        <Link href="/" className="flex items-center gap-3 justify-self-start">
           <Image
             src="/logo.png"
             alt="Embuscon"
             width={100}
             height={100}
             priority
-            className="h-200 w-200"
+            // ✅ Fix: Tailwind doesn't have h-200/w-200 by default
+            className="h-10 w-auto"
           />
           <span className="font-semibold">Embuscon</span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="ml-auto hidden md:flex items-center gap-3">
-          <nav className="flex items-center gap-2">
-            <NavLink href="/about">About</NavLink>
-            <NavLink href="/services">Services</NavLink>
+        {/* CENTER: Desktop nav */}
+        <nav className="hidden md:flex items-center justify-center gap-8 justify-self-center">
+          <NavLink href="/about">About</NavLink>
+          <NavLink href="/ai">AI</NavLink>
+          <NavLink href="/networks">Networks</NavLink>
+          <NavLink href="/softwares">Softwares</NavLink>
+          <NavLink href="/careers">Careers</NavLink>
+          <NavLink href="/contact">Contact</NavLink>
+          <NavLink href="/blog">Blog</NavLink>
+        </nav>
 
-            {/* ⭐ New Blog link */}
-            <NavLink href="/blog">Blog</NavLink>
-
-            <NavLink href="/contact">Contact</NavLink>
-          </nav>
+        {/* RIGHT: Desktop actions */}
+        <div className="hidden md:flex items-center justify-end gap-3 justify-self-end">
           <ThemeToggle />
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-brand-border"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-controls="mobile-menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <svg
-            className="hamburger"
-            viewBox="0 0 24 24"
-            width="22"
-            height="22"
-            aria-hidden="true"
+        {/* RIGHT: Mobile hamburger */}
+        <div className="md:hidden flex items-center justify-end justify-self-end">
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-brand-border"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-controls="mobile-menu"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
           >
-            <path className={`line line1 ${open ? "x1" : ""}`} d="M4 7h16" />
-            <path className={`line line2 ${open ? "x2" : ""}`} d="M4 12h16" />
-            <path className={`line line3 ${open ? "x3" : ""}`} d="M4 17h16" />
-          </svg>
-        </button>
+            <svg
+              className="hamburger"
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              aria-hidden="true"
+            >
+              <path className={`line line1 ${open ? "x1" : ""}`} d="M4 7h16" />
+              <path className={`line line2 ${open ? "x2" : ""}`} d="M4 12h16" />
+              <path className={`line line3 ${open ? "x3" : ""}`} d="M4 17h16" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       <div
         id="mobile-menu"
-        className={`md:hidden ${
-          open ? "" : "hidden"
-        } border-t border-brand-border bg-brand-card`}
+        className={`md:hidden ${open ? "" : "hidden"} border-t border-brand-border bg-brand-card`}
         onClick={(e) => {
           const target = e.target as HTMLElement;
           if (target.tagName === "A") setOpen(false);
         }}
       >
         <nav className="px-4 py-3 grid gap-2">
+          {/* Mobile keeps its own sizing via className override */}
           <NavLink href="/about" className="block rounded-lg px-3 py-2 text-base">
             About
           </NavLink>
@@ -89,18 +94,16 @@ export default function Navbar() {
           >
             Services
           </NavLink>
-
-          {/* ⭐ New Blog link (mobile) */}
           <NavLink href="/blog" className="block rounded-lg px-3 py-2 text-base">
             Blog
           </NavLink>
-
           <NavLink
             href="/contact"
             className="block rounded-lg px-3 py-2 text-base"
           >
             Contact
           </NavLink>
+
           <div className="pt-2 border-t border-brand-border flex items-center justify-between px-3">
             <span className="text-sm opacity-80">Theme</span>
             <ThemeToggle />

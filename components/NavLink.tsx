@@ -8,7 +8,7 @@ interface NavLinkProps {
   href: string;
   children: ReactNode;
   className?: string;
-};
+}
 
 /**
  * NavLink
@@ -24,8 +24,9 @@ export default function NavLink({ href, children, className = "" }: NavLinkProps
       ? pathname === "/"
       : pathname === href || pathname.startsWith(href + "/");
 
-  const baseClasses =
-    "text-sm transition-colors";
+  // ✅ Slightly larger by default. Mobile overrides (text-base) still win.
+  const baseClasses = "text-[15.5px] md:text-base transition-colors";
+
   const activeClasses = "text-emerald-400 font-medium";
   const inactiveClasses = "opacity-80 hover:opacity-100";
 
