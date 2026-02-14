@@ -31,10 +31,10 @@ export default function HomePage() {
             <div className="rounded-2xl bg-white shadow-soft border border-brand-border p-6 text-neutral-900">
               <h3 className="font-semibold mb-2">Quick Highlights</h3>
               <ul className="space-y-2 opacity-90 text-sm">
-                <li>• Data Modernization with Azure Fabric</li>
-                <li>• Agentic AI MVPs (CrewAI / AutoGen / LangChain) with governance-first approach</li>
-                <li>• Delivery management for BFSI, Telecom, Travel/Hospitality</li>
-                <li>• Contract & Legal consulting for large programs</li>
+                <li>• AI-Ready Digital Infrastructure</li>
+                <li>• Industry-Led Transformation Delivery</li>
+                <li>• Agentic AI Systems with Governance by Design</li>
+                <li>• Enterprise Data Modernization</li>
               </ul>
             </div>
           </div>
@@ -47,10 +47,10 @@ export default function HomePage() {
           <h2 className="text-2xl font-semibold mb-6">What We Do</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: "Data Platform Modernization", blurb: "IaC-Terraform, Medallion Architecture, Governance, Lineage, RBAC, DRR KPIs." },
-              { title: "Agentic AI", blurb: "Multi-agent workflows, retrieval, OCR pipelines, evaluation & safety guardrails." },
-              { title: "Program & Delivery", blurb: "RACI, RAIDD, KPIs, stakeholder comms, outcome-driven execution." },
-              { title: "Legal & Contract", blurb: "CLM workflows, playbooks, contract review accelerators." },
+              { title: "Enterprise AI & Agentic Systems", blurb: "Designing and deploying governed AI solutions — from data foundations to multi-agent enterprise automation." },
+              { title: "Secure Hybrid Cloud & Network Architecture", blurb: " Engineering scalable, resilient, and AI-ready infrastructure across cloud, on-prem, and edge environments." },
+              { title: "Data & Digital Core Modernization", blurb: "Modernizing data platforms, analytics, and enterprise systems to enable AI-ready decision ecosystems." },
+              { title: "Enterprise Software & Platform Engineering", blurb: "Building cloud-native, microservices-based enterprise platforms with DevSecOps and lifecycle governance." },
             ].map((s) => (
               <article key={s.title} className="card p-6 bg-white/70 dark:bg-neutral-900/60">
                 <h3 className="text-lg font-semibold">{s.title}</h3>

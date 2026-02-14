@@ -17,3 +17,25 @@ model ContactSubmission {
   ip        String?
   createdAt DateTime @default(now())
 }
+
+model CareerApplication {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+
+  fullName      String
+  email         String
+  phone         String?
+  role          String
+  location      String?
+  noticePeriod  String?
+  experience    String?
+  message       String
+
+  resumeUrl     String?   // optional future use (file upload)
+
+  status        String     @default("NEW") // NEW | REVIEWED | REJECTED | SHORTLISTED
+
+  @@index([email])
+  @@index([status])
+
+}
