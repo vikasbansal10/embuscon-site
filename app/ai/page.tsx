@@ -135,7 +135,10 @@ export default function ArtificialIntelligencePage() {
         imageSrc="/images/services-hero.jpg"
         heightClass="h-[34vh] md:h-[42vh] lg:h-[50vh]"
         className="mb-6"
+
       />
+
+
 
       {/* Intro */}
       <Reveal>

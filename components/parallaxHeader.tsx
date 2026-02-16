@@ -1,14 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
+import clsx from "clsx";
 
-interface Props {
+interface ParallaxHeaderProps  {
   title: string;
   subtitle?: string;
-  imageSrc: string;             // e.g. "/images/about-hero.jpg"
-  heightClass?: string;         // e.g. "h-[42vh] md:h-[56vh]"
+  imageSrc: string;
+  heightClass?: string;
   className?: string;
 };
 
@@ -16,58 +15,45 @@ export default function ParallaxHeader({
   title,
   subtitle,
   imageSrc,
-  heightClass = "h-[36vh] md:h-[44vh] lg:h-[52vh]",
-  className = "",
-}: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-
-  // Track scroll relative to this section
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"], // 0 when top hits top, 1 when bottom hits top
-  });
-
-  // Parallax transforms
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const scaleBg = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
-
+  heightClass = "min-h-[260px] h-[38vh] md:h-[42vh] lg:h-[50vh]",
+  className,
+}: ParallaxHeaderProps) {
   return (
-    <div
-      ref={ref}
-      className={`relative w-full overflow-hidden rounded-2xl border border-brand-border ${heightClass} ${className}`}
+    <section
+      className={clsx(
+        "relative overflow-hidden rounded-3xl border border-brand-border",
+        heightClass,
+        className
+      )}
     >
-      {/* Background image */}
-      <motion.div
-        className="absolute inset-0"
-        style={prefersReducedMotion ? undefined : { y: yBg, scale: scaleBg }}
-      >
-        <Image
-          src={imageSrc}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </motion.div>
+      <Image
+        src={imageSrc}
+        alt={title}
+        fill
+        priority
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, 1100px"
+      />
 
-      {/* Overlay gradient for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-transparent dark:from-black/60" />
+      {/* Overlay for contrast */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20" />
 
-      {/* Foreground copy */}
-      <motion.div
-        className="relative z-10 h-full flex items-center justify-center text-center px-6"
-        style={prefersReducedMotion ? undefined : { y: yText }}
-      >
-        <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-white">{title}</h1>
-          {subtitle ? (
-            <p className="mt-3 text-neutral-100/90 text-lg">{subtitle}</p>
-          ) : null}
+      {/* Content: center on mobile (less empty top), bottom on md+ */}
+      <div className="relative z-10 h-full flex items-center md:items-end">
+        <div className="w-full px-4 sm:px-6 md:px-10 py-6 md:pb-10">
+          <div className="max-w-3xl">
+            <h1 className="font-extrabold tracking-tight text-white leading-[1.05] text-[clamp(1.8rem,6vw,4rem)]">
+              {title}
+            </h1>
+
+            {subtitle ? (
+              <p className="mt-3 text-white/90 leading-relaxed text-[clamp(0.95rem,2.8vw,1.25rem)] max-w-2xl">
+                {subtitle}
+              </p>
+            ) : null}
+          </div>
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </section>
   );
 }

@@ -3,10 +3,12 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 import Navbar from "@/components/NavBar";   // ✅ now from components folder
 
+
 export const metadata = {
   title: "Embuscon — Empowering Business thru Consulting",
   description: "Data Platform Modernization • Agentic AI • Delivery • Legal",
-  other: { "color-scheme": "dark light" }
+  other: { "color-scheme": "dark light" },
+  icons: { icon: "/favicon.ico"}
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -21,7 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <Navbar />
 
-        <main className="flex-1">{children}</main>
+      <main className="flex-1 pt-16">{children}</main>
 
         <footer className="border-t border-brand-border">
           <div className="max-w-6xl mx-auto container-px py-8 text-sm flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -32,4 +34,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
+
+  
 }
