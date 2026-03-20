@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { HeroTypewriter } from "@/components/HeroTypewriter";
 import { MotionCard } from "@/components/anim";
+import { Brain, Users, Bot, Database, TrendingUp, Clock, ShieldCheck } from "lucide-react";
 
 /* ─── Tech logo strip data ───────────────────────────────── */
 const TECH_LOGOS = [
@@ -68,14 +69,14 @@ export default function HomePage() {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-neutral-950">
+      <section className="relative overflow-hidden bg-white dark:bg-neutral-950">
         {/* Aurora blobs */}
-        <div className="aurora-1 absolute -top-40 -left-40 w-[650px] h-[650px] rounded-full bg-brand-primary/25 blur-[130px] pointer-events-none" aria-hidden />
-        <div className="aurora-2 absolute -top-20 right-0 w-[550px] h-[550px] rounded-full bg-teal-400/15 blur-[110px] pointer-events-none" aria-hidden />
-        <div className="aurora-3 absolute bottom-0 left-1/3 w-[450px] h-[450px] rounded-full bg-emerald-500/10 blur-[90px] pointer-events-none" aria-hidden />
+        <div className="aurora-1 absolute -top-40 -left-40 w-[650px] h-[650px] rounded-full bg-brand-primary/20 dark:bg-brand-primary/25 blur-[130px] pointer-events-none" aria-hidden />
+        <div className="aurora-2 absolute -top-20 right-0 w-[550px] h-[550px] rounded-full bg-teal-400/10 dark:bg-teal-400/15 blur-[110px] pointer-events-none" aria-hidden />
+        <div className="aurora-3 absolute bottom-0 left-1/3 w-[450px] h-[450px] rounded-full bg-emerald-500/8 dark:bg-emerald-500/10 blur-[90px] pointer-events-none" aria-hidden />
 
-        <div className="relative z-10 max-w-6xl mx-auto container-px py-20 sm:py-28">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto container-px pt-6 pb-8 sm:pt-8 sm:pb-10">
+          <div className="grid md:grid-cols-2 gap-8 items-start">
 
             {/* Left — headline + CTAs */}
             <div className="min-w-0">
@@ -84,13 +85,13 @@ export default function HomePage() {
                 AI-First Consulting
               </div>
 
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white leading-tight">
                 Empowering Business<br />
-                <span className="text-white/50">to </span>
+                <span className="text-neutral-400 dark:text-white/50">to </span>
                 <HeroTypewriter />
               </h1>
 
-              <p className="mt-5 text-base text-white/65 max-w-lg leading-relaxed">
+              <p className="mt-5 text-base text-neutral-600 dark:text-white/65 max-w-lg leading-relaxed">
                 Engineering-led consultancy helping enterprises modernize platforms,
                 govern AI, and ship outcomes that last.
               </p>
@@ -101,7 +102,7 @@ export default function HomePage() {
                 </Link>
                 <Link
                   href="/services"
-                  className="btn rounded-xl border border-white/20 text-white hover:bg-white/10"
+                  className="btn rounded-xl border border-neutral-300 dark:border-white/20 text-neutral-700 dark:text-white hover:bg-neutral-100 dark:hover:bg-white/10"
                 >
                   Explore Services
                 </Link>
@@ -109,28 +110,50 @@ export default function HomePage() {
             </div>
 
             {/* Right — glass highlights card */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 p-6 text-white shadow-soft">
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">
+            <div className="relative rounded-2xl bg-neutral-50 dark:bg-white/5 backdrop-blur-md border border-neutral-200 dark:border-white/10 p-6 shadow-soft overflow-hidden">
+              {/* Teal gradient top accent */}
+              <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-brand-primary/60 to-transparent" />
+
+              <h3 className="text-[11px] font-semibold uppercase tracking-widest text-neutral-400 dark:text-white/35 mb-5">
                 What sets us apart
               </h3>
-              <ul className="space-y-4">
+
+              <ul className="space-y-1">
                 {[
-                  { label: "AI-Ready Digital Infrastructure",       sub: "Governed, observable, enterprise-grade" },
-                  { label: "Industry-Led Transformation",           sub: "Senior pods · Clear SLAs · Measurable KPIs" },
-                  { label: "Agentic AI with Governance by Design",  sub: "CrewAI · LangChain · AutoGen · Responsible AI" },
-                  { label: "Enterprise Data Modernization",         sub: "Azure-native medallion · Federated governance" },
-                ].map((item) => (
-                  <li key={item.label} className="flex items-start gap-3">
-                    <span className="mt-0.5 w-5 h-5 rounded-full bg-brand-primary/20 border border-brand-primary/40 flex items-center justify-center flex-shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
+                  { icon: Brain,      label: "AI-Ready Digital Infrastructure",      sub: "Governed, observable, enterprise-grade" },
+                  { icon: Users,      label: "Industry-Led Transformation",           sub: "Senior pods · Clear SLAs · Measurable KPIs" },
+                  { icon: Bot,        label: "Agentic AI with Governance by Design",  sub: "CrewAI · LangChain · AutoGen · Responsible AI" },
+                  { icon: Database,   label: "Enterprise Data Modernization",         sub: "Azure-native medallion · Federated governance" },
+                ].map(({ icon: Icon, label, sub }) => (
+                  <li
+                    key={label}
+                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors duration-150 group"
+                  >
+                    <span className="mt-0.5 w-8 h-8 rounded-lg bg-brand-primary/15 border border-brand-primary/25 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-primary/25 transition-colors duration-150">
+                      <Icon className="w-4 h-4 text-brand-primary" />
                     </span>
                     <div>
-                      <p className="text-sm font-medium text-white/90">{item.label}</p>
-                      <p className="text-xs text-white/45 mt-0.5">{item.sub}</p>
+                      <p className="text-sm font-semibold text-neutral-800 dark:text-white/90 leading-snug">{label}</p>
+                      <p className="text-xs text-neutral-500 dark:text-white/40 mt-0.5 leading-relaxed">{sub}</p>
                     </div>
                   </li>
                 ))}
               </ul>
+
+              {/* Mini metrics strip */}
+              <div className="mt-5 pt-4 border-t border-neutral-200 dark:border-white/8 grid grid-cols-3 gap-2 text-center">
+                {[
+                  { icon: TrendingUp,   value: "3×",   label: "Release velocity" },
+                  { icon: Clock,        value: "6 wk", label: "AI MVP to prod" },
+                  { icon: ShieldCheck,  value: "100%", label: "Governance-first" },
+                ].map(({ icon: Icon, value, label }) => (
+                  <div key={label} className="flex flex-col items-center gap-1">
+                    <Icon className="w-3.5 h-3.5 text-brand-primary/70" />
+                    <span className="text-base font-bold text-neutral-800 dark:text-white/90 leading-none">{value}</span>
+                    <span className="text-[10px] text-neutral-500 dark:text-white/35 leading-tight">{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
           </div>

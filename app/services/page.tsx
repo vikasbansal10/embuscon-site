@@ -220,7 +220,7 @@ export default function ServicesPage() {
             href="mailto:contactus@embuscon.com"
             className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl"
           >
-            Contact Us →
+            Email Us → contactus@embuscon.com
           </a>
         </MotionCard>
       </Reveal>
