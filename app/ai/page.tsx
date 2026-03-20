@@ -250,7 +250,7 @@ export default function ArtificialIntelligencePage() {
             Let’s define a secure, scalable AI roadmap aligned to your enterprise priorities.
           </p>
           <a
-            href="/contact"
+            href="mailto:contactus@embuscon.com"
             className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl"
           >
             Start the Conversation →

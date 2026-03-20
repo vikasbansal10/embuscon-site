@@ -248,7 +248,7 @@ export default function SoftwaresPage() {
             Tell us your objectives. We’ll propose the best-fit approach across high-code, low-code,
             integration automation, and document AI.
           </p>
-          <a href="/contact" className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl">
+          <a href="mailto:contactus@embuscon.com" className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl">
             Discuss Your Requirement →
           </a>
         </MotionCard>

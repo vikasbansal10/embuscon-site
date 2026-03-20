@@ -39,3 +39,50 @@ body { @apply bg-brand-bg text-brand-fg antialiased; }
 @layer utilities {
   .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.12); }
 }
+
+/* ── Typewriter cursor ───────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: hsl(var(--primary));
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  animation: blink 0.85s step-end infinite;
+}
+
+/* ── Aurora hero background ──────────────────────────────── */
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(50px, -40px) scale(1.12); }
+  66%      { transform: translate(-30px, 25px) scale(0.93); }
+}
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  33%      { transform: translate(-60px, 30px) scale(0.88); }
+  66%      { transform: translate(40px, -50px) scale(1.15); }
+}
+@keyframes aurora-3 {
+  0%, 100% { transform: translate(0, 0) scale(0.95); }
+  50%      { transform: translate(25px, 35px) scale(1.08); }
+}
+.aurora-1 { animation: aurora-1 14s ease-in-out infinite; }
+.aurora-2 { animation: aurora-2 18s ease-in-out infinite; }
+.aurora-3 { animation: aurora-3 11s ease-in-out infinite; }
+
+/* ── Logo strip marquee ──────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }

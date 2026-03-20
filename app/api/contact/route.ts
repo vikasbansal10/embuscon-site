@@ -14,6 +14,7 @@ const ALLOWED_ORIGINS = [
   "https://embuscon.com",
   "https://www.embuscon.com",
   "http://localhost:3000",
+  "http://localhost:3001",
 ] as const;
 
 /** Zod schema for incoming contact payload */

@@ -217,7 +217,7 @@ export default function ServicesPage() {
             Share a business need—we’ll map best-fit options and a fast path to value.
           </p>
           <a
-            href="/contact"
+            href="mailto:contactus@embuscon.com"
             className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl"
           >
             Contact Us →

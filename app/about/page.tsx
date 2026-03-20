@@ -143,16 +143,12 @@ export default function AboutPage() {
       <Reveal className="mt-14 mb-8 text-center">
         <p className="text-lg md:text-xl font-medium">Let’s build something reliable.</p>
         <p className="mt-2 text-neutral-600 dark:text-neutral-300">
-          Have a challenge in mind? Start an RFP or say hello via{" "}
-          <a href="/contact" className="underline hover:no-underline">Contact Us</a>
-          —we’ll return with a lightweight plan and options.
+          Have a challenge in mind? Start an RFP or say hello at{" "}
+          <a href="mailto:contactus@embuscon.com" className="underline hover:no-underline">
+            contactus@embuscon.com
+          </a>
+          {" "}— we’ll return with a lightweight plan and options.
         </p>
-        <a
-          href="/contact"
-          className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl transition-transform will-change-transform hover:scale-[1.02] active:scale-[0.98]"
-        >
-          Contact Us →
-        </a>
       </Reveal>
     </div>
   );

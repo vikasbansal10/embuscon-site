@@ -222,7 +222,7 @@ export default function NetworkServicesPage() {
             Share your current environment and objectives—we’ll propose a secure, scalable roadmap
             aligned to performance, resilience, and Zero Trust.
           </p>
-          <a href="/contact" className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl">
+          <a href="mailto:contactus@embuscon.com" className="mt-6 inline-flex items-center gap-2 btn-primary rounded-xl">
             Schedule a Consultation →
           </a>
         </MotionCard>

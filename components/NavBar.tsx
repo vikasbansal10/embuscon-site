@@ -18,7 +18,6 @@ export default function Navbar() {
       { href: "/networks", label: "Networks" },
       { href: "/softwares", label: "Softwares" },
       { href: "/careers", label: "Careers" },
-      { href: "/contact", label: "Contact" },
       { href: "/blog", label: "Blog" },
     ],
     []

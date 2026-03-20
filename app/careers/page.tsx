@@ -182,7 +182,11 @@ export default function CareersPage() {
               <div className="mt-6 flex items-center gap-2">
                 <Users className="h-4 w-4 opacity-70" />
                 <p className="text-sm opacity-90">
-                  Apply via the contact form — mention the role title.
+                  Email us at{" "}
+                  <a href="mailto:contactus@embuscon.com" className="underline hover:no-underline">
+                    contactus@embuscon.com
+                  </a>{" "}
+                  — mention the role title.
                 </p>
               </div>
             </MotionCard>
@@ -200,9 +204,9 @@ export default function CareersPage() {
           </p>
 
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="/contact" className="inline-flex items-center gap-2 btn-primary rounded-xl">
+            <a href="mailto:contactus@embuscon.com" className="inline-flex items-center gap-2 btn-primary rounded-xl">
               <Mail className="h-4 w-4" />
-              Apply via Contact →
+              Email Us to Apply →
             </a>
             <a href="/about" className="inline-flex items-center gap-2 btn-outline rounded-xl">
               Learn about Embuscon →
