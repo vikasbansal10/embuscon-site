@@ -13,13 +13,13 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
         <Script id="theme-init" strategy="beforeInteractive">{`(function(){try{
           var s = localStorage.getItem('theme');
-          if (s === 'light') document.documentElement.classList.remove('dark');
-          else document.documentElement.classList.add('dark');
-        }catch(e){document.documentElement.classList.add('dark');}})();`}</Script>
+          if (s === 'dark') document.documentElement.classList.add('dark');
+          else document.documentElement.classList.remove('dark');
+        }catch(e){document.documentElement.classList.remove('dark');}})();`}</Script>
 
         <Navbar />
 

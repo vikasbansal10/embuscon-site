@@ -9,9 +9,9 @@
   "packageManager": "npm@10.9.3",
   "scripts": {
     "content:build": "contentlayer2 build",
-    "dev": "next dev -p 3000",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start -p 3000",
+    "start": "next start -p 3001",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {

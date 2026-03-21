@@ -8,6 +8,7 @@ interface NavLinkProps {
   href: string;
   children: ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 
 /**
@@ -16,7 +17,7 @@ interface NavLinkProps {
  * - `startsWith` so `/blog` is also active on `/blog/some-post`
  * - Allows extra classes (e.g. mobile: block, px-3, py-2)
  */
-export default function NavLink({ href, children, className = "" }: NavLinkProps) {
+export default function NavLink({ href, children, className = "", onClick }: NavLinkProps) {
   const pathname = usePathname();
 
   const isActive =
@@ -34,7 +35,7 @@ export default function NavLink({ href, children, className = "" }: NavLinkProps
     `${baseClasses} ${isActive ? activeClasses : inactiveClasses} ${className}`.trim();
 
   return (
-    <Link href={href} className={combined}>
+    <Link href={href} className={combined} onClick={onClick}>
       {children}
     </Link>
   );

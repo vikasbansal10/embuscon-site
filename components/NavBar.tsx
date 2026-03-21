@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import NavLink from "@/components/NavLink";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -40,16 +41,16 @@ export default function Navbar() {
       <header className="fixed top-0 left-0 right-0 z-[200] bg-brand-card/80 backdrop-blur border-b border-brand-border">
         <div className="max-w-6xl mx-auto container-px h-16 flex items-center justify-between md:grid md:grid-cols-3 md:items-center">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-3 min-w-0 md:justify-self-start">
+          <Link href="/" className="flex items-center min-w-0 md:justify-self-start">
             <Image
-              src="/logo.png"
+              src="/Embuscon.png"
               alt="Embuscon"
-              width={100}
-              height={100}
+              width={311}
+              height={83}
+              sizes="(max-width: 768px) 180px, 220px"
               priority
-              className="h-10 w-auto"
+              className="h-9 w-auto md:h-10"
             />
-            <span className="font-semibold truncate">Embuscon</span>
           </Link>
 
           {/* Desktop nav */}
@@ -75,30 +76,21 @@ export default function Navbar() {
               aria-expanded={open}
               className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-brand-border"
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-                <path className={`line ${open ? "rotate-45 translate-y-[5px]" : ""}`} d="M4 7h16" />
-                <path className={`line ${open ? "opacity-0" : ""}`} d="M4 12h16" />
-                <path className={`line ${open ? "-rotate-45 -translate-y-[5px]" : ""}`} d="M4 17h16" />
-              </svg>
+              {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
 
         {/* Mobile menu */}
         {open && (
-          <div
-            className="md:hidden border-t border-brand-border bg-brand-card"
-            onClick={(e) => {
-              const el = e.target as HTMLElement;
-              if (el.closest("a")) setOpen(false);
-            }}
-          >
+          <div className="md:hidden border-t border-brand-border bg-brand-card">
             <nav className="px-4 py-4 space-y-2">
               {navItems.map((item) => (
                 <NavLink
                   key={item.href}
                   href={item.href}
                   className="block rounded-lg px-3 py-2 text-base"
+                  onClick={() => setOpen(false)}
                 >
                   {item.label}
                 </NavLink>
@@ -112,15 +104,7 @@ export default function Navbar() {
           </div>
         )}
 
-        <style jsx>{`
-          .line {
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            transition: transform 0.25s ease, opacity 0.2s ease;
-            transform-origin: 12px 12px;
-          }
-        `}</style>
+
       </header>
     </>
   );

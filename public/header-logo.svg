@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 311 83" role="img" aria-labelledby="title desc">
+  <title id="title">Embuscon</title>
+  <desc id="desc">Embuscon logo with the tagline Empowering Business thru Consulting.</desc>
+  <g transform="translate(8 10)">
+    <rect x="0" y="0" width="52" height="52" rx="10" fill="#188c89"/>
+    <rect x="13" y="10" width="6" height="32" rx="3" fill="#ffffff"/>
+    <rect x="20" y="10" width="26" height="6" rx="3" fill="#ffffff"/>
+    <rect x="20" y="23" width="22" height="6" rx="3" fill="#ffffff"/>
+    <rect x="20" y="36" width="26" height="6" rx="3" fill="#ffffff"/>
+  </g>
+  <text x="72" y="36" fill="#12204a" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="1">
+    EMBUSCON
+  </text>
+  <text x="8" y="72" fill="#4e4e4e" font-family="Arial, Helvetica, sans-serif" font-size="12">
+    Empowering Business thru Consulting
+  </text>
+</svg>
