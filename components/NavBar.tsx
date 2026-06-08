@@ -43,13 +43,22 @@ export default function Navbar() {
           {/* Brand */}
           <Link href="/" className="flex items-center min-w-0 md:justify-self-start">
             <Image
-              src="/Embuscon.png"
+              src="/Embuscon-light.png"
               alt="Embuscon"
-              width={311}
-              height={83}
-              sizes="(max-width: 768px) 180px, 220px"
+              width={410}
+              height={101}
+              sizes="(max-width: 768px) 150px, 170px"
               priority
-              className="h-9 w-auto md:h-10"
+              className="w-[150px] h-auto dark:hidden md:w-[170px]"
+            />
+            <Image
+              src="/Embuscon-dark.png"
+              alt="Embuscon"
+              width={1777}
+              height={402}
+              sizes="(max-width: 768px) 150px, 170px"
+              priority
+              className="hidden w-[150px] h-auto dark:block md:w-[170px]"
             />
           </Link>
 
